@@ -1,0 +1,7 @@
+image: buildpack-deps:disco
+
+release:
+  only:
+    - release@getto-systems-labo/container/dockerfile
+  script:
+    - ./bin/push_tags.sh
