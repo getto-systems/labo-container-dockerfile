@@ -1,3 +1,7 @@
+# Version : 0.3.0
+
+fix: env vars
+
 # Version : 0.2.0
 
 fix: use setpriv
