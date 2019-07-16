@@ -1,3 +1,7 @@
+# Version : 0.3.1
+
+fix: vulnerabilities
+
 # Version : 0.3.0
 
 fix: env vars

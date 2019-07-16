@@ -24,7 +24,20 @@ RUN set -x && \
       tmux \
       less \
       neovim \
-      uidmap \
+    && \
+    : "to fix vulnerabilities, update following packages" && \
+    apt-get install -y \
+      bzip2 \
+      imagemagick \
+      imagemagick-6.q16 \
+      libbz2-1.0 \
+      libglib2.0-data \
+      libexpat1 \
+      libglib2.0-0 \
+      libmagickcore-6-arch-config \
+      libpq-dev \
+      libsqlite3-0 \
+      linux-libc-dev \
     && \
     apt-add-repository ppa:fish-shell/release-3 && \
     apt-get update && \
