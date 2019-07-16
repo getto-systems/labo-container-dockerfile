@@ -5,11 +5,12 @@ ENV LABO_USER laboratory
 ENV BUILD_LABO_USER $LABO_USER
 
 ENV NODE_VERSION 10
+ENV DOCKER_GID 233
 
 RUN set -x && \
     apt-get update && \
     apt-get install -y \
-      sudo \
+      setpriv \
       software-properties-common \
       locales \
       locales-all \
@@ -25,7 +26,6 @@ RUN set -x && \
       neovim \
       uidmap \
     && \
-    echo '%sudo  ALL=(ALL:ALL) NOPASSWD: ALL' >> /etc/sudoers && \
     apt-add-repository ppa:fish-shell/release-3 && \
     apt-get update && \
     apt-get install -y fish && \
@@ -33,8 +33,9 @@ RUN set -x && \
     apt-get install -y nodejs && \
     curl -sSL https://get.docker.com | sh && \
     apt-get clean && \
-    groupmod -g 233 docker && \
-    useradd $LABO_USER -s /bin/bash && \
+    rm -rf /var/lib/apt/lists/* && \
+    groupmod -g $DOCKER_GID docker && \
+    useradd $BUILD_LABO_USER -s /bin/bash && \
     :
 
 COPY entrypoint.sh /usr/local/bin
