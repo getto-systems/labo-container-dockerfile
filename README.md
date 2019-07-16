@@ -22,16 +22,15 @@ docker run -it --rm \
 - [Usage](#Usage)
 - [License](#License)
 
-<a id="Requirements"></a>
+
 ## Requirements
 
 - Docker version 18.09.7, build 2d0083d657
 
 
-<a id="Usage"></a>
 ## Usage
 
-run labo container with options
+run container with options
 
 ```bash
 docker run -it --rm \
@@ -47,7 +46,6 @@ docker run -it --rm \
 ```
 
 
-<a id="License"></a>
 ## License
 
 labo-container-dockerfile is licensed under the [MIT](LICENSE) license.
