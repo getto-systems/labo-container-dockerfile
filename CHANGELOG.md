@@ -1,3 +1,7 @@
+# Version : 0.7.5
+
+fix: push_latest
+
 # Version : 0.7.4
 
 fix: push_latest
