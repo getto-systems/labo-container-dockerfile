@@ -1,17 +1,22 @@
-#!/bin/sh
-
-image=getto/labo-container
-version=$(git tag | tail -1)
+#!/bin/bash
 
 push_latest(){
-  docker pull $image:$version
+  local image=getto/labo-container
+  local version=$(git tag | tail -1)
+  local result
+
+  echo "target: $image:$version"
+
+  docker pull $image:$version > /dev/null
   if [ $? == 0 ]; then
-    return # already push signed image
+    echo "already push signed image"
+    return
   fi
 
-  docker pull --disable-content-trust $image:$version
+  docker pull --disable-content-trust $image:$version > /dev/null
   if [ $? != 0 ]; then
-    return # build not finished
+    echo "build not finished"
+    return
   fi
 
   export HOME=$(pwd)
