@@ -3,6 +3,7 @@ image: buildpack-deps:disco
 test:
   except:
     - release
+    - update
     - tags
 
   image: docker:stable
@@ -20,22 +21,8 @@ test:
 
   before_script:
     - apk -Uuv add bash git curl tar sed grep
-    - |
-      VERSION=$(
-      curl --silent "https://api.github.com/repos/goodwithtech/dockle/releases/latest" | \
-      grep '"tag_name":' | \
-      sed -E 's/.*"v([^"]+)".*/\1/' \
-      ) && curl -L -o dockle.tar.gz https://github.com/goodwithtech/dockle/releases/download/v${VERSION}/dockle_${VERSION}_Linux-64bit.tar.gz && \
-      tar zxvf dockle.tar.gz && \
-      mv dockle /usr/bin
-    - |
-      VERSION=$(
-      curl --silent "https://api.github.com/repos/knqyf263/trivy/releases/latest" | \
-      grep '"tag_name":' | \
-      sed -E 's/.*"v([^"]+)".*/\1/' \
-      ) && curl -L -o trivy.tar.gz https://github.com/knqyf263/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz && \
-      tar zxvf trivy.tar.gz && \
-      mv trivy /usr/bin
+    - ./bin/install_dockle.sh
+    - ./bin/install_trivy.sh
     - export HOME=$(pwd)
   script:
     - docker build -t getto/labo-container:${CI_COMMIT_SHORT_SHA} .
@@ -45,12 +32,34 @@ test:
 update:
   only:
     - schedules
+
+  image: docker:stable
+
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+    DOCKER_CONTENT_TRUST: 1
+  services:
+    - docker:dind
+
+  cache:
+    paths:
+      - .cache
+
+  before_script:
+    - apk -Uuv add bash git curl tar sed grep
+    - ./bin/install_dockle.sh
+    - ./bin/install_trivy.sh
+    - export HOME=$(pwd)
   script:
+    - docker build -t getto/labo-container:${CI_COMMIT_SHORT_SHA} .
+    - dockle --exit-code 1 getto/labo-container:${CI_COMMIT_SHORT_SHA}
+    - trivy --exit-code 1 --quiet --ignore-unfixed --auto-refresh getto/labo-container:${CI_COMMIT_SHORT_SHA}
     - ./bin/append_date_to_release_version.sh
+    - ./bin/push_tags.sh
 
 release:
   only:
     - release@getto-systems-labo/container/dockerfile
-    - update@getto-systems-labo/container/dockerfile
   script:
     - ./bin/push_tags.sh
