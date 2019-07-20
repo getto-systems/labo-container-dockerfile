@@ -19,7 +19,6 @@ test:
 
   before_script:
     - ./bin/install_ci_tools.sh
-    - export HOME=$(pwd)
   script:
     - ./bin/test.sh
 
@@ -42,7 +41,6 @@ update:
 
   before_script:
     - ./bin/install_ci_tools.sh
-    - export HOME=$(pwd)
   script:
     - ./bin/test.sh
     - ./bin/append_date_to_release_version.sh
