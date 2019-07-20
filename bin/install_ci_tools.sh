@@ -1,6 +1,4 @@
-#!/bin/bash
-
-set -x
+#!/bin/sh
 
 apk -Uuv add bash git curl tar sed grep && \
 ./bin/install_dockle.sh && \
