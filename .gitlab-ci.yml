@@ -65,5 +65,7 @@ push_latest:
   services:
     - docker:dind
 
+  before_script:
+    - apk -Uuv add bash git
   script:
     - ./bin/push_latest.sh
