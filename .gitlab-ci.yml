@@ -1,11 +1,5 @@
 image: buildpack-deps:disco
 
-release:
-  only:
-    - release@getto-systems-labo/container/dockerfile
-  script:
-    - ./bin/push_tags.sh
-
 docker_test:
   image: docker:stable
 
@@ -18,7 +12,7 @@ docker_test:
 
   cache:
     paths:
-      - $HOME/.cache/trivy
+      - $HOME/.cache/trivy/
 
   before_script:
     - apk -Uuv add bash git curl tar sed grep
@@ -40,3 +34,16 @@ docker_test:
       tar zxvf trivy.tar.gz
     - ./dockle --exit-code 1 getto/labo-container:${CI_COMMIT_SHORT_SHA}
     - ./trivy --exit-code 1 --ignore-unfixed --auto-refresh getto/labo-container:${CI_COMMIT_SHORT_SHA}
+
+release:
+  only:
+    - release@getto-systems-labo/container/dockerfile
+  script:
+    - ./bin/push_tags.sh
+
+update:
+  only:
+    - schedules
+  script:
+    - ./bin/append_date_to_release_version.sh
+    - ./bin/push_tags.sh
