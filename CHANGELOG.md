@@ -1,3 +1,7 @@
+# Version : 0.4.0
+
+add: dockle and trivy test
+
 # Version : 0.3.1
 
 fix: vulnerabilities

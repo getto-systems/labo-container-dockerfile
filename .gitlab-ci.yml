@@ -51,5 +51,6 @@ update:
 release:
   only:
     - release@getto-systems-labo/container/dockerfile
+    - update@getto-systems-labo/container/dockerfile
   script:
     - ./bin/push_tags.sh
