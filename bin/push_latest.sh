@@ -2,7 +2,7 @@
 
 push_latest(){
   local image=getto/labo-container
-  local version=$(git tag -l "$(cat .release-version)*" | tail -1)
+  local version=$(git tag --sort=-version:refname | head -1)
   local result
 
   echo "target: $image:$version"
