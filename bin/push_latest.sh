@@ -5,6 +5,8 @@ push_latest(){
   local version=$(git tag | tail -1)
   local result
 
+  echo "target: $image:$version"
+
   docker pull $image:$version > /dev/null
   if [ $? == 0 ]; then
     echo "already push signed image"
