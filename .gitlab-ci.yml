@@ -36,11 +36,11 @@ test:
       ) && curl -L -o trivy.tar.gz https://github.com/knqyf263/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz && \
       tar zxvf trivy.tar.gz && \
       mv trivy /usr/bin
-    - export HOME=$(pwd)
   script:
+    - export HOME=$(pwd)
     - docker build -t getto/labo-container:${CI_COMMIT_SHORT_SHA} .
     - dockle --exit-code 1 getto/labo-container:${CI_COMMIT_SHORT_SHA}
-    - trivy --exit-code 1 --ignore-unfixed --auto-refresh getto/labo-container:${CI_COMMIT_SHORT_SHA}
+    - trivy --exit-code 1 --quiet --ignore-unfixed --auto-refresh getto/labo-container:${CI_COMMIT_SHORT_SHA}
 
 release:
   only:
