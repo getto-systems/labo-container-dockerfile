@@ -3,22 +3,39 @@
 image=getto/labo-container
 version=$(cat .release-version)
 
-export HOME=$(pwd)
+push_latest(){
+  docker pull $image:$version
+  if [ $? == 0 ]; then
+    return # already push signed image
+  fi
 
-mkdir -p $HOME/.docker/trust/private
+  docker pull --disable-content-trust $image:$version
+  if [ $? != 0 ]; then
+    return # build not finished
+  fi
 
-cat $DOCKER_CONTENT_TRUST_ROOT_KEY > $HOME/.docker/trust/private/$DOCKER_CONTENT_TRUST_ROOT_ID.key
-cat $DOCKER_CONTENT_TRUST_REPOSITORY_KEY > $HOME/.docker/trust/private/$DOCKER_CONTENT_TRUST_REPOSITORY_ID.key
+  export HOME=$(pwd)
 
-chmod 600 $HOME/.docker/trust/private/*.key
+  mkdir -p $HOME/.docker/trust/private
 
-cat $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin && \
-docker pull --disable-content-trust $image:$version && \
-docker tag $image:$version $image:latest && \
-docker push $image:latest && \
-docker push $image:$version && \
-:
+  cat $DOCKER_CONTENT_TRUST_ROOT_KEY > $HOME/.docker/trust/private/$DOCKER_CONTENT_TRUST_ROOT_ID.key
+  cat $DOCKER_CONTENT_TRUST_REPOSITORY_KEY > $HOME/.docker/trust/private/$DOCKER_CONTENT_TRUST_REPOSITORY_ID.key
 
-docker logout
+  chmod 600 $HOME/.docker/trust/private/*.key
 
-: # always success
+  cat $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin && \
+  docker tag $image:$version $image:latest && \
+  docker push $image:latest && \
+  docker push $image:$version && \
+  :
+
+  result=$?
+
+  docker logout
+
+  if [ $result != 0 ]; then
+    exit 1
+  fi
+}
+
+push_latest
