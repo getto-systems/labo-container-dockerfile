@@ -36,7 +36,7 @@ test:
       ) && curl -L -o trivy.tar.gz https://github.com/knqyf263/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz && \
       tar zxvf trivy.tar.gz && \
       mv trivy /usr/bin
-    - mkdir -p /root/.cache/trivy && ln -s /root/.cache
+    - mkdir -p /root/.cache && mkdir -p .cache/trivy && ln -s .cache/trivy /root/.cache/trivy
   script:
     - docker build -t getto/labo-container:${CI_COMMIT_SHORT_SHA} .
     - dockle --exit-code 1 getto/labo-container:${CI_COMMIT_SHORT_SHA}
