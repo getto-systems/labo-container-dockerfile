@@ -18,14 +18,9 @@ test:
       - .cache
 
   before_script:
-    - apk -Uuv add bash git curl tar sed grep
-    - ./bin/install_dockle.sh
-    - ./bin/install_trivy.sh
-    - export HOME=$(pwd)
+    - ./bin/install_ci_tools.sh
   script:
-    - docker build -t getto/labo-container:${CI_COMMIT_SHORT_SHA} .
-    - dockle --exit-code 1 getto/labo-container:${CI_COMMIT_SHORT_SHA}
-    - trivy --exit-code 1 --quiet --ignore-unfixed --auto-refresh getto/labo-container:${CI_COMMIT_SHORT_SHA}
+    - ./bin/test.sh
 
 update:
   only:
@@ -45,14 +40,9 @@ update:
       - .cache
 
   before_script:
-    - apk -Uuv add bash git curl tar sed grep
-    - ./bin/install_dockle.sh
-    - ./bin/install_trivy.sh
-    - export HOME=$(pwd)
+    - ./bin/install_ci_tools.sh
   script:
-    - docker build -t getto/labo-container:${CI_COMMIT_SHORT_SHA} .
-    - dockle --exit-code 1 getto/labo-container:${CI_COMMIT_SHORT_SHA}
-    - trivy --exit-code 1 --quiet --ignore-unfixed --auto-refresh getto/labo-container:${CI_COMMIT_SHORT_SHA}
+    - ./bin/test.sh
     - ./bin/append_date_to_release_version.sh
     - ./bin/push_tags.sh
 

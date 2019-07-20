@@ -1,3 +1,7 @@
+# Version : 0.6.0
+
+fix: gitlab-ci
+
 # Version : 0.5.0
 
 fix: gitlab-ci
