@@ -1,18 +1,17 @@
 #!/bin/sh
 
 image=getto/labo-container
-version=$(cat .release-version)
+version=$(git tag | tail -1)
 
 push_latest(){
-  docker pull --disable-content-trust $image:$version > /dev/null
-  if [ $? != 0 ]; then
-    return # build not finished
+  docker pull $image:$version
+  if [ $? == 0 ]; then
+    return # already push signed image
   fi
 
-  docker pull $image:$version > /dev/null
-  docker pull $image:latest > /dev/null
-  if [ "$(push_latest_image_id $version)" == "$(push_latest_image_id latest)" ]; then
-    return # already pushed signed image with latest tag
+  docker pull --disable-content-trust $image:$version
+  if [ $? != 0 ]; then
+    return # build not finished
   fi
 
   export HOME=$(pwd)
@@ -37,9 +36,6 @@ push_latest(){
   if [ $result != 0 ]; then
     exit 1
   fi
-}
-push_latest_image_id(){
-  docker image inspect $image:$1 -f "{{.ID}}"
 }
 
 push_latest
