@@ -1,6 +1,10 @@
 image: buildpack-deps:disco
 
-docker_test:
+test:
+  except:
+    - release
+    - tags
+
   image: docker:stable
 
   variables:
@@ -12,7 +16,7 @@ docker_test:
 
   cache:
     paths:
-      - $HOME/.cache/trivy/
+      - .cache/trivy/
 
   before_script:
     - apk -Uuv add bash git curl tar sed grep
