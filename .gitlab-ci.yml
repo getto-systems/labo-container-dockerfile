@@ -51,3 +51,12 @@ release:
     - release@getto-systems-labo/container/dockerfile
   script:
     - ./bin/push_tags.sh
+
+push_latest:
+  only:
+    - triggers
+
+  image: docker:stable
+
+  script:
+    - ./bin/push_latest.sh

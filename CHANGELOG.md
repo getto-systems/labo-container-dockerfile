@@ -1,3 +1,7 @@
+# Version : 0.7.0
+
+add: push_latest job
+
 # Version : 0.6.0
 
 fix: gitlab-ci
