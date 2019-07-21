@@ -1,3 +1,7 @@
+# Version : 1.1.0
+
+fix: neovim install
+
 # Version : 1.0.0
 
 fix: base on ubuntu
