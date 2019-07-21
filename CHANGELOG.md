@@ -1,3 +1,7 @@
+# Version : 1.0.0
+
+fix: base on ubuntu
+
 # Version : 0.7.8
 
 fix: push_latest

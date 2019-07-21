@@ -1,4 +1,4 @@
-FROM buildpack-deps:cosmic
+FROM ubuntu:cosmic
 MAINTAINER shun
 
 ENV LABO_USER laboratory
@@ -9,7 +9,11 @@ ENV DOCKER_GID 233
 
 RUN set -x && \
     apt-get update && \
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
+      ca-certificates \
+      curl \
+      gnupg \
+      git \
       setpriv \
       software-properties-common \
       locales \
@@ -26,24 +30,14 @@ RUN set -x && \
       neovim \
     && \
     : "to fix vulnerabilities, update following packages" && \
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
       bzip2 \
-      imagemagick \
-      imagemagick-6.q16 \
-      libbz2-1.0 \
-      libglib2.0-data \
-      libexpat1 \
-      libglib2.0-0 \
-      libmagickcore-6-arch-config \
-      libpq-dev \
-      libsqlite3-0 \
-      linux-libc-dev \
     && \
     apt-add-repository ppa:fish-shell/release-3 && \
     apt-get update && \
-    apt-get install -y fish && \
+    apt-get install -y --no-install-recommends fish && \
     curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - && \
-    apt-get install -y nodejs && \
+    apt-get install -y --no-install-recommends nodejs && \
     curl -sSL https://get.docker.com | sh && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
