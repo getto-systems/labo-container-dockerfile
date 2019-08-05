@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 2.0.0
+
+upgrade: os! See merge request getto-systems-labo/container/dockerfile!45
+remove: changelog See merge request getto-systems-labo/container/dockerfile!44
+
+
 ## Version : 1.6.0
 
 
