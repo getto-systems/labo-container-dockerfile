@@ -9,7 +9,11 @@ stages:
 test:
   stage: test
   only:
-    - merge_requests
+    refs:
+      - merge_requests
+    changes:
+      - Dockerfile
+      - entrypoint.sh
 
   image: docker:stable
 
