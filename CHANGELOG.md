@@ -1,3 +1,9 @@
+# CHANGELOG
+
+## Version : 1.2.0
+
+fix: gitlab-ci See merge request getto-systems-labo/container/dockerfile!43
+
 # Version : 1.1.0
 
 fix: neovim install
