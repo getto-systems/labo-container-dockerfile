@@ -2,18 +2,22 @@
 
 push_latest(){
   local image=getto/labo-container
-  local version=$(git tag --sort=-version:refname | head -1)
   local result
 
-  echo "target: $image:$version"
+  if [ -z "$tag" ]; then
+    echo "tag not specified"
+    exit 1
+  fi
 
-  docker pull $image:$version > /dev/null
+  echo "target: $image:$tag"
+
+  docker pull $image:$tag > /dev/null
   if [ $? == 0 ]; then
     echo "already push signed image"
     return
   fi
 
-  docker pull --disable-content-trust $image:$version > /dev/null
+  docker pull --disable-content-trust $image:$tag > /dev/null
   if [ $? != 0 ]; then
     echo "build not finished"
     return
@@ -29,9 +33,9 @@ push_latest(){
   chmod 600 $HOME/.docker/trust/private/*.key
 
   cat $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin && \
-  docker tag $image:$version $image:latest && \
+  docker tag $image:$tag $image:latest && \
   docker push $image:latest && \
-  docker push $image:$version && \
+  docker push $image:$tag && \
   :
 
   result=$?

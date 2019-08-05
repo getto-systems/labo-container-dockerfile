@@ -1,6 +1,13 @@
-image: buildpack-deps:disco
+stages:
+  - test
+  - build
+  - release
+  - notify
+  - push_latest
+  - update
 
 test:
+  stage: test
   only:
     - merge_requests
 
@@ -22,7 +29,102 @@ test:
   script:
     - ./bin/test.sh
 
+build:
+  stage: build
+  only:
+    refs:
+      - triggers
+    variables:
+      - $RELEASE
+
+  image: docker:stable
+
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+    DOCKER_CONTENT_TRUST: 1
+  services:
+    - docker:dind
+
+  cache:
+    paths:
+      - .cache
+
+  before_script:
+    - ./bin/install_ci_tools.sh
+  script:
+    - ./bin/test.sh
+
+release:
+  stage: release
+  only:
+    refs:
+      - triggers
+    variables:
+      - $RELEASE
+
+  image: buildpack-deps:disco-scm
+
+  variables:
+    GIT_USER_NAME: getto
+    GIT_USER_EMAIL: admin@getto.systems
+
+  script:
+    - curl https://raw.githubusercontent.com/getto-systems/version-dump/master/bin/version_dump.sh | bash
+    - ./bin/push_tags.sh
+
+release_success:
+  stage: notify
+  only:
+    refs:
+      - triggers
+    variables:
+      - $RELEASE
+  when: on_success
+
+  image: buildpack-deps:disco-curl
+
+  script:
+    - ./bin/notify.sh success
+
+release_failure:
+  stage: notify
+  only:
+    refs:
+      - triggers
+    variables:
+      - $RELEASE
+  when: on_failure
+
+  image: buildpack-deps:disco-curl
+
+  script:
+    - ./bin/notify.sh failure
+
+push_latest:
+  stage: push_latest
+  only:
+    refs:
+      - triggers
+    variables:
+      - $PUSH_LATEST
+
+  image: docker:stable
+
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+    DOCKER_CONTENT_TRUST: 1
+  services:
+    - docker:dind
+
+  before_script:
+    - apk -Uuv add bash git
+  script:
+    - ./bin/push_latest.sh
+
 update:
+  stage: update
   only:
     - schedules
 
@@ -45,27 +147,3 @@ update:
     - ./bin/test.sh
     - ./bin/append_date_to_release_version.sh
     - ./bin/push_tags.sh
-
-release:
-  only:
-    - release@getto-systems-labo/container/dockerfile
-  script:
-    - ./bin/push_tags.sh
-
-push_latest:
-  only:
-    - triggers
-
-  image: docker:stable
-
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_DRIVER: overlay2
-    DOCKER_CONTENT_TRUST: 1
-  services:
-    - docker:dind
-
-  before_script:
-    - apk -Uuv add bash git
-  script:
-    - ./bin/push_latest.sh
