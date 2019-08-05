@@ -13,7 +13,7 @@ push_latest(){
 
   docker pull $image:$tag > /dev/null
   if [ $? == 0 ]; then
-    echo "already push signed image"
+    echo "signed image already pushed"
     return
   fi
 
