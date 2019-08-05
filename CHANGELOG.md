@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version : 1.3.0
+
+
+
 ## Version : 1.2.0
 
 fix: gitlab-ci See merge request getto-systems-labo/container/dockerfile!43
