@@ -45,6 +45,10 @@ docker run -it --rm \
   getto/labo-container:latest
 ```
 
+### base image
+
+- ubuntu:disco
+
 
 ## License
 
