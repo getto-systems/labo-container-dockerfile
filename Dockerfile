@@ -1,4 +1,4 @@
-FROM ubuntu:cosmic
+FROM ubuntu:disco
 MAINTAINER shun
 
 ENV LABO_USER laboratory
@@ -14,7 +14,7 @@ RUN set -x && \
       ca-certificates \
       curl \
       git \
-      setpriv \
+      util-linux \
       software-properties-common \
       locales \
       locales-all \
@@ -29,7 +29,7 @@ RUN set -x && \
       less \
     && \
     : "to fix vulnerabilities, update following packages" && \
-    apt-get install -y --no-install-recommends \
+    : apt-get install -y --no-install-recommends \
       bzip2 \
     && \
     : "install fish" && \
