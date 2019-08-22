@@ -126,7 +126,7 @@ push_latest:
     - apk -Uuv add bash git
   script:
     - ./bin/push_latest.sh
-    - [ -f push_latest_success ] && curl https://raw.githubusercontent.com/getto-systems/psycher-getto/master/bin/notify-push_latest.sh | bash -s -- -r getto/container -l $GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true success
+    - curl https://raw.githubusercontent.com/getto-systems/psycher-getto/master/bin/notify-push_latest.sh | bash -s -- -r getto/container -l $GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true success
 
 update:
   stage: update
