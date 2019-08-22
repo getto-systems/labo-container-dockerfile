@@ -123,7 +123,7 @@ push_latest:
     - docker:dind
 
   before_script:
-    - apk -Uuv add bash git
+    - apk -Uuv add bash git curl
   script:
     - ./bin/push_latest.sh
     - curl https://raw.githubusercontent.com/getto-systems/psycher-getto/master/bin/notify-push_latest.sh | bash -s -- -r getto/labo-container -l $GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true success
