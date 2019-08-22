@@ -45,6 +45,8 @@ push_latest(){
   if [ $result != 0 ]; then
     exit 1
   fi
+
+  touch push_latest_success
 }
 
 push_latest
