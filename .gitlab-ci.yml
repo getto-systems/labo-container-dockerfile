@@ -1,10 +1,11 @@
+image: getto/hangar:latest
+
 stages:
   - test
-  - build
+  - check
   - release
-  - notify
   - push_latest
-  - update
+  - notify
 
 test:
   stage: test
@@ -15,7 +16,27 @@ test:
       - Dockerfile
       - entrypoint.sh
 
-  image: docker:stable
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+    DOCKER_CONTENT_TRUST: 1
+  services:
+    - docker:dind
+
+  cache:
+    paths:
+      - .cache
+
+  script:
+    - getto-hangar-build.sh
+
+check:
+  stage: check
+  only:
+    refs:
+      - schedules
+    variables:
+      - $CHECK
 
   variables:
     DOCKER_HOST: tcp://docker:2375/
@@ -28,20 +49,16 @@ test:
     paths:
       - .cache
 
-  before_script:
-    - ./bin/install_ci_tools.sh
   script:
-    - ./bin/test.sh
+    - getto-hangar-build.sh
 
-build:
-  stage: build
+push_latest:
+  stage: push_latest
   only:
     refs:
       - triggers
     variables:
-      - $RELEASE
-
-  image: docker:stable
+      - $PUSH_LATEST
 
   variables:
     DOCKER_HOST: tcp://docker:2375/
@@ -50,14 +67,9 @@ build:
   services:
     - docker:dind
 
-  cache:
-    paths:
-      - .cache
-
-  before_script:
-    - ./bin/install_ci_tools.sh
   script:
-    - ./bin/test.sh
+    - getto-hangar-push_latest.sh getto/labo-container
+    - curl https://raw.githubusercontent.com/getto-systems/psycher-getto/master/bin/notify-push_latest.sh | bash -s -- -r getto/labo-container -l $GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true success
 
 release:
   stage: release
@@ -66,8 +78,6 @@ release:
       - triggers
     variables:
       - $RELEASE
-
-  image: buildpack-deps:disco-scm
 
   variables:
     GIT_USER_NAME: getto
@@ -104,51 +114,3 @@ release_failure:
 
   script:
     - curl https://raw.githubusercontent.com/getto-systems/psycher-getto/master/bin/notify-deploy.sh | bash -s -- -l $GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true failure
-
-push_latest:
-  stage: push_latest
-  only:
-    refs:
-      - triggers
-    variables:
-      - $PUSH_LATEST
-
-  image: docker:stable
-
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_DRIVER: overlay2
-    DOCKER_CONTENT_TRUST: 1
-  services:
-    - docker:dind
-
-  before_script:
-    - apk -Uuv add bash git curl
-  script:
-    - ./bin/push_latest.sh
-    - curl https://raw.githubusercontent.com/getto-systems/psycher-getto/master/bin/notify-push_latest.sh | bash -s -- -r getto/labo-container -l $GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true success
-
-update:
-  stage: update
-  only:
-    - schedules
-
-  image: docker:stable
-
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_DRIVER: overlay2
-    DOCKER_CONTENT_TRUST: 1
-  services:
-    - docker:dind
-
-  cache:
-    paths:
-      - .cache
-
-  before_script:
-    - ./bin/install_ci_tools.sh
-  script:
-    - ./bin/test.sh
-    - ./bin/append_date_to_release_version.sh
-    - ./bin/push_tags.sh
