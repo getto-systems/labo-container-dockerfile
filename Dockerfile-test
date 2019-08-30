@@ -1,3 +1,0 @@
-FROM getto/labo-container:latest
-
-CMD ["true"]
