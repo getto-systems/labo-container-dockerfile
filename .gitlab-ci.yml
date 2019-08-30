@@ -50,7 +50,7 @@ check:
       - .cache
 
   script:
-    - getto-hangar-build.sh
+    - getto-hangar-test.sh
 
 push_latest:
   stage: push_latest
@@ -85,7 +85,7 @@ release:
 
   script:
     - curl https://raw.githubusercontent.com/getto-systems/version-dump/master/bin/version_dump.sh | bash
-    - ./bin/push_tags.sh
+    - curl https://raw.githubusercontent.com/getto-systems/version-dump/master/bin/push_tags.sh | bash
 
 release_success:
   stage: notify
