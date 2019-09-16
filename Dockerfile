@@ -29,7 +29,7 @@ RUN set -x && \
   && \
   : "to fix vulnerabilities, update following packages" && \
   apt-get install -y --no-install-recommends \
-    openssl \
+    libudev1 \
   && \
   : "install fish" && \
   apt-add-repository ppa:fish-shell/release-3 && \
