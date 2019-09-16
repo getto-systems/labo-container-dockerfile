@@ -28,8 +28,8 @@ RUN set -x && \
     less \
   && \
   : "to fix vulnerabilities, update following packages" && \
-  : apt-get install -y --no-install-recommends \
-    bzip2 \
+  apt-get install -y --no-install-recommends \
+    openssl \
   && \
   : "install fish" && \
   apt-add-repository ppa:fish-shell/release-3 && \
