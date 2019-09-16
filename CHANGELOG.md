@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 2.2.0
+
+- fix: vulnerabilities : See merge request getto-systems-base/labo/container/dockerfile!53
+- fix: dockleignore : See merge request getto-systems-base/labo/container/dockerfile!52
+
+
 ## Version : 2.1.1
 
 - fix: gitlab-ci : See merge request getto-systems-base/labo/container/dockerfile!51
