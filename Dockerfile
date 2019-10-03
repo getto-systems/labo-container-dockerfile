@@ -27,10 +27,12 @@ RUN set -x && \
     tmux \
     less \
   && \
-  : "to fix vulnerabilities, update packages : 2019-09-24" && \
+  : "to fix vulnerabilities, update packages : 2019-10-03" && \
   apt-get install -y --no-install-recommends \
-    libudev1 \
-    openssl \
+    e2fsprogs \
+    libcom-err2 \
+    libext2fs2 \
+    libss2 \
   && \
   : "install fish" && \
   apt-add-repository ppa:fish-shell/release-3 && \
