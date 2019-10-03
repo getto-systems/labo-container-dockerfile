@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.4.0
+
+- fix: vulnerabilities : See merge request getto-systems-base/labo/container/dockerfile!55
+
+
 ## Version : 2.3.0
 
 - fix: vulnerabilities : See merge request getto-systems-base/labo/container/dockerfile!54
