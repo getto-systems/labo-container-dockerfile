@@ -24,6 +24,7 @@ RUN set -x && \
     man \
     manpages-dev \
     silversearcher-ag \
+    yash \
     tmux \
     less \
   && \
