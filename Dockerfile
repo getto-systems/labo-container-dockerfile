@@ -24,6 +24,7 @@ RUN set -x && \
     man \
     manpages-dev \
     silversearcher-ag \
+    yash \
     tmux \
     less \
   && \
@@ -53,6 +54,8 @@ RUN set -x && \
   : "setup uid, gid" && \
   groupmod -g $DOCKER_GID docker && \
   useradd $BUILD_LABO_USER -s /bin/bash && \
+  : "setup yash as sh" && \
+  ln -fs /bin/yash /bin/sh && \
   :
 
 COPY entrypoint.sh /usr/local/bin
