@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.5.0
+
+- add: yash : See merge request getto-systems-base/labo/container/dockerfile!56
+
+
 ## Version : 2.4.0
 
 - fix: vulnerabilities : See merge request getto-systems-base/labo/container/dockerfile!55
