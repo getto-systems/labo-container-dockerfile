@@ -35,6 +35,8 @@ RUN set -x && \
     libext2fs2 \
     libss2 \
   && \
+  : "setup yash as sh" && \
+  ln -s /bin/yash /usr/local/bin/sh && \
   : "install fish" && \
   apt-add-repository ppa:fish-shell/release-3 && \
   apt-get update && \
@@ -54,8 +56,6 @@ RUN set -x && \
   : "setup uid, gid" && \
   groupmod -g $DOCKER_GID docker && \
   useradd $BUILD_LABO_USER -s /bin/bash && \
-  : "setup yash as sh" && \
-  ln -fs /bin/yash /bin/sh && \
   :
 
 COPY entrypoint.sh /usr/local/bin
