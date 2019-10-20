@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.6.0
+
+- fix: setup sh : See merge request getto-systems-base/labo/container/dockerfile!57
+
+
 ## Version : 2.5.0
 
 - add: yash : See merge request getto-systems-base/labo/container/dockerfile!56
