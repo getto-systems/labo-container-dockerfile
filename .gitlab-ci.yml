@@ -75,7 +75,7 @@ image_push:
   stage: image_push
   only:
     refs:
-      - master@getto-systems-base/projects/hangar
+      - master@getto-systems-base/labo/container/dockerfile
     changes:
       - Dockerfile
   except:
@@ -122,7 +122,7 @@ release:
   stage: release
   only:
     refs:
-      - master@getto-systems-base/projects/hangar
+      - master@getto-systems-base/labo/container/dockerfile
     changes:
       - .release-version
   except:
@@ -139,13 +139,13 @@ release:
 
   script:
     - curl https://raw.githubusercontent.com/getto-systems/version-dump/master/bin/push_tags.sh | bash
-    - getto-hangar-push_latest.sh getto/hangar
+    - getto-hangar-push_latest.sh getto/labo-container
 
 release_success:
   stage: release_notify
   only:
     refs:
-      - master@getto-systems-base/projects/hangar
+      - master@getto-systems-base/labo/container/dockerfile
     changes:
       - .release-version
   except:
@@ -165,7 +165,7 @@ release_failure:
   stage: release_notify
   only:
     refs:
-      - master@getto-systems-base/projects/hangar
+      - master@getto-systems-base/labo/container/dockerfile
     changes:
       - .release-version
   except:
