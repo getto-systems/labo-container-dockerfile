@@ -1,20 +1,21 @@
 image: getto/hangar:latest
 
 stages:
-  - test
-  - check
+  - image_build
+  - image_test
+  - image_fix_vulnerabilities
+  - image_push
+  - version_dump
   - release
-  - push_latest
-  - notify
+  - release_notify
 
-test:
-  stage: test
+image_build:
+  stage: image_build
   only:
     refs:
       - merge_requests
     changes:
       - Dockerfile
-      - entrypoint.sh
 
   variables:
     DOCKER_HOST: tcp://docker:2375/
@@ -30,8 +31,8 @@ test:
   script:
     - getto-hangar-build.sh
 
-check:
-  stage: check
+image_test:
+  stage: image_test
   only:
     refs:
       - schedules
@@ -52,13 +53,82 @@ check:
   script:
     - getto-hangar-test.sh
 
-push_latest:
-  stage: push_latest
+image_fix_vulnerabilities:
+  stage: image_fix_vulnerabilities
+  only:
+    refs:
+      - schedules
+    variables:
+      - $CHECK
+  when: on_failure
+
+  before_script:
+    - git config user.email admin@getto.systems
+    - git config user.name getto
+    - curl https://raw.githubusercontent.com/getto-systems/git-post/master/scripts/setup.sh | bash -s -- ./vendor/getto-systems
+    - export PATH=$PATH:./vendor/getto-systems/git-post/bin
+  script:
+    - getto-hangar-fix-vulnerabilities.sh
+    - curl https://raw.githubusercontent.com/getto-systems/version-dump/master/bin/request.sh | bash -s -- ./.fix-vulnerabilities-message.sh
+
+image_push:
+  stage: image_push
+  only:
+    refs:
+      - master@getto-systems-base/projects/hangar
+    changes:
+      - Dockerfile
+  except:
+    refs:
+      - schedules
+      - triggers
+
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+    DOCKER_CONTENT_TRUST: 1
+  before_script:
+    - git config user.email admin@getto.systems
+    - git config user.name getto
+    - curl https://raw.githubusercontent.com/getto-systems/git-post/master/scripts/setup.sh | bash -s -- ./vendor/getto-systems
+    - export PATH=$PATH:./vendor/getto-systems/git-post/bin
+  services:
+    - docker:dind
+
+  script:
+    - getto-hangar-push.sh
+    - curl https://raw.githubusercontent.com/getto-systems/version-dump/master/bin/request.sh | bash -s -- ./.fix-image-message.sh
+
+version_dump:
+  stage: version_dump
   only:
     refs:
       - triggers
     variables:
-      - $PUSH_LATEST
+      - $RELEASE
+
+  image: buildpack-deps:disco-scm
+
+  before_script:
+    - git config user.email admin@getto.systems
+    - git config user.name getto
+    - curl https://raw.githubusercontent.com/getto-systems/git-post/master/scripts/setup.sh | bash -s -- ./vendor/getto-systems
+    - export PATH=$PATH:./vendor/getto-systems/git-post/bin
+  script:
+    - curl https://raw.githubusercontent.com/getto-systems/version-dump/master/bin/version_dump.sh | bash
+    - curl https://raw.githubusercontent.com/getto-systems/version-dump/master/bin/request.sh | bash -s -- ./.release-version-message.sh
+
+release:
+  stage: release
+  only:
+    refs:
+      - master@getto-systems-base/projects/hangar
+    changes:
+      - .release-version
+  except:
+    refs:
+      - triggers
+      - schedules
 
   variables:
     DOCKER_HOST: tcp://docker:2375/
@@ -68,49 +138,45 @@ push_latest:
     - docker:dind
 
   script:
-    - getto-hangar-push_latest.sh getto/labo-container
-    - curl https://raw.githubusercontent.com/getto-systems/psycher-getto/master/bin/notify-push_latest.sh | bash -s -- -r getto/labo-container -l $GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true success
-
-release:
-  stage: release
-  only:
-    refs:
-      - triggers
-    variables:
-      - $RELEASE
-
-  variables:
-    GIT_USER_NAME: getto
-    GIT_USER_EMAIL: admin@getto.systems
-
-  script:
-    - curl https://raw.githubusercontent.com/getto-systems/version-dump/master/bin/version_dump.sh | bash
     - curl https://raw.githubusercontent.com/getto-systems/version-dump/master/bin/push_tags.sh | bash
+    - getto-hangar-push_latest.sh getto/hangar
 
 release_success:
-  stage: notify
+  stage: release_notify
   only:
     refs:
+      - master@getto-systems-base/projects/hangar
+    changes:
+      - .release-version
+  except:
+    refs:
       - triggers
-    variables:
-      - $RELEASE
+      - schedules
   when: on_success
 
   image: buildpack-deps:disco-curl
 
+  before_script:
+    - export channel=$SLACK_CHANNEL
   script:
-    - curl https://raw.githubusercontent.com/getto-systems/psycher-getto/master/bin/notify-deploy.sh | bash -s -- -l $GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true success
+    - curl https://raw.githubusercontent.com/getto-systems/psycher-getto/master/bin/notify-release.sh | bash -s -- -l $GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true success
 
 release_failure:
-  stage: notify
+  stage: release_notify
   only:
     refs:
+      - master@getto-systems-base/projects/hangar
+    changes:
+      - .release-version
+  except:
+    refs:
       - triggers
-    variables:
-      - $RELEASE
+      - schedules
   when: on_failure
 
   image: buildpack-deps:disco-curl
 
+  before_script:
+    - export channel=$SLACK_CHANNEL
   script:
-    - curl https://raw.githubusercontent.com/getto-systems/psycher-getto/master/bin/notify-deploy.sh | bash -s -- -l $GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true failure
+    - curl https://raw.githubusercontent.com/getto-systems/psycher-getto/master/bin/notify-release.sh | bash -s -- -l $GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true failure
