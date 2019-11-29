@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 2.6.1
+
+- fix: gitlab-ci : See merge request getto-systems-base/labo/container/dockerfile!59
+- fix: set-window-title : See merge request getto-systems-base/labo/container/dockerfile!58
+
+
 ## Version : 2.6.0
 
 - fix: setup sh : See merge request getto-systems-base/labo/container/dockerfile!57
