@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 2.6.3
+
+- fix: gitlab-ci : See merge request getto-systems-base/labo/container/dockerfile!64
+- fix: gitlab-ci : See merge request getto-systems-base/labo/container/dockerfile!63
+
+
 ## Version : 2.6.2
 
 - fix: gitlab-ci : See merge request getto-systems-base/labo/container/dockerfile!61
