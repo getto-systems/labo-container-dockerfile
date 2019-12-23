@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Version : 2.7.0
+
+- fix: Dockerfile : See merge request getto-systems-base/labo/container/dockerfile!70
+- fix: gitlab-ci : See merge request getto-systems-base/labo/container/dockerfile!69
+- fix: vulnerabilities : 2019-12-23T01:09:23,705401669 00:00 : See merge request getto-systems-base/labo/container/dockerfile!68
+- fix: vulnerabilities : 2019-12-09T01:08:43,021264680 00:00 : See merge request getto-systems-base/labo/container/dockerfile!66
+
+
 ## Version : 2.6.3
 
 - fix: gitlab-ci : See merge request getto-systems-base/labo/container/dockerfile!64
