@@ -28,7 +28,7 @@ RUN set -x && \
     tmux \
     less \
   && \
-  : "to fix vulnerabilities, update packages : 2019-12-23 20:13" && \
+  : "to fix vulnerabilities, update packages : 2020-01-20" && \
   : apt-get install -y --no-install-recommends \
     e2fsprogs \
     libcom-err2 \
