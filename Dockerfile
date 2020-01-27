@@ -28,8 +28,8 @@ RUN set -x && \
     tmux \
     less \
   && \
-  : "to fix vulnerabilities, update packages : 2020-01-20" && \
-  : apt-get install -y --no-install-recommends \
+  : "to fix vulnerabilities, update packages : 2020-01-27" && \
+  apt-get install -y --no-install-recommends \
     e2fsprogs \
     libcom-err2 \
     libext2fs2 \
