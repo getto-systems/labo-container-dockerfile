@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 2.9.0
+
+- fix: vulnerabilities : 2020-01-27T01:08:34,540036968 00:00 : See merge request getto-systems-base/labo/container/dockerfile!74
+- fix: vulnerabilities : See merge request getto-systems-base/labo/container/dockerfile!75
+
+
 ## Version : 2.8.0
 
 - fix: vulnerabilities : 2020-01-20T01:08:04,447345708 00:00 : See merge request getto-systems-base/labo/container/dockerfile!72
