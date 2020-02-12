@@ -29,7 +29,7 @@ RUN set -x && \
     less \
   && \
   : "to fix vulnerabilities, update packages : 2020-02-13" && \
-  : apt-get install -y --no-install-recommends \
+  apt-get install -y --no-install-recommends \
     e2fsprogs \
     libcom-err2 \
     libext2fs2 \
