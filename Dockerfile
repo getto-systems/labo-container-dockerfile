@@ -28,7 +28,7 @@ RUN set -x && \
     tmux \
     less \
   && \
-  : "to fix vulnerabilities, update packages : 2020-01-27" && \
+  : "to fix vulnerabilities, update packages : 2020-02-13" && \
   apt-get install -y --no-install-recommends \
     e2fsprogs \
     libcom-err2 \
@@ -46,6 +46,13 @@ RUN set -x && \
   : "install node" && \
   curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - && \
   apt-get install -y nodejs && \
+  npm install -g \
+    npm \
+    textlint \
+    textlint-rule-preset-ja-technical-writing \
+    textlint-rule-write-good \
+  && \
+  rm -rf /root/.npm && \
   : "install neovim" && \
   apt-add-repository ppa:neovim-ppa/stable && \
   apt-get update && \
