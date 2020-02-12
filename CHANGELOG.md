@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 2.10.0
+
+- add: textlint : See merge request getto-systems-base/labo/container/dockerfile!77
+
+
+
 ## Version : 2.9.0
 
 - fix: vulnerabilities : 2020-01-27T01:08:34,540036968 00:00 : See merge request getto-systems-base/labo/container/dockerfile!74
