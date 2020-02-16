@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.11.0
+
+- update: os : See merge request getto-systems-base/labo/container/dockerfile!79
+
+
 ## Version : 2.10.0
 
 - add: textlint : See merge request getto-systems-base/labo/container/dockerfile!77
