@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.12.0
+
+- fix: base image : See merge request getto-systems-base/labo/container/dockerfile!81
+
+
 ## Version : 2.11.0
 
 - update: os : See merge request getto-systems-base/labo/container/dockerfile!79
