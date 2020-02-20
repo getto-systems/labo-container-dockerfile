@@ -2,7 +2,6 @@ image: getto/hangar:latest
 
 stages:
   - image_build
-  - image_test
   - image_fix_vulnerabilities
   - bump_version
   - release
@@ -19,7 +18,6 @@ image_build:
   variables:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
-    DOCKER_CONTENT_TRUST: 1
   services:
     - docker:dind
 
@@ -28,30 +26,7 @@ image_build:
       - .cache
 
   script:
-    - getto-hangar-build.sh
-
-image_test:
-  stage: image_test
-  only:
-    refs:
-      - schedules
-    variables:
-      - $CHECK
-
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_DRIVER: overlay2
-    DOCKER_CONTENT_TRUST: 1
-    image: getto/labo-container
-  services:
-    - docker:dind
-
-  cache:
-    paths:
-      - .cache
-
-  script:
-    - getto-hangar-test.sh
+    - getto-hangar-build-without-test.sh
 
 image_fix_vulnerabilities:
   stage: image_fix_vulnerabilities

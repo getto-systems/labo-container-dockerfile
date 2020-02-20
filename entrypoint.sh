@@ -1,7 +1,9 @@
 #!/bin/sh
 
 if [ -n "$DOCKER_GID" ]; then
-  groupmod -g $DOCKER_GID docker
+  if [ "$DOCKER_GID" != "$(cat /etc/group | grep docker | cut -d : -f3)" ]; then
+    groupmod -g $DOCKER_GID docker
+  fi
 fi
 
 groupmod -n $LABO_USER $BUILD_LABO_USER
