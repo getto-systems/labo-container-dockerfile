@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.13.0
+
+- add: core utils : See merge request getto-systems-base/labo/container/dockerfile!85
+
+
 ## Version : 2.12.1
 
 - fix: gitlab-ci : See merge request getto-systems-base/labo/container/dockerfile!83
