@@ -16,6 +16,12 @@ RUN set -x && \
     nodejs \
     npm \
     jq \
+    coreutils \
+    findutils \
+    diffutils \
+    grep \
+    sed \
+    gawk \
     less \
     tmux \
     neovim \
