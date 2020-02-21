@@ -23,6 +23,7 @@ RUN set -x && \
     sed \
     gawk \
     less \
+    which \
     tmux \
     neovim \
     python-pynvim \
