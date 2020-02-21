@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.14.0
+
+- add: which : See merge request getto-systems-base/labo/container/dockerfile!87
+
+
 ## Version : 2.13.0
 
 - add: core utils : See merge request getto-systems-base/labo/container/dockerfile!85
