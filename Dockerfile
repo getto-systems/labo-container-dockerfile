@@ -29,13 +29,6 @@ RUN set -x && \
     python-pynvim \
     ripgrep \
   && \
-  : "to fix vulnerabilities, update packages : 2020-02-13" && \
-  : pacman -Uq --noconfirm \
-    e2fsprogs \
-    libcom-err2 \
-    libext2fs2 \
-    libss2 \
-  && \
   : "install yash" && \
   cd /opt && \
   git clone https://github.com/magicant/yash && \
