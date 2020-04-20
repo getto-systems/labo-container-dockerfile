@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version : 2.16.0
+
+- add: libffi : See merge request getto-systems-base/labo/container/dockerfile!96
+
+
+
 ## Version : 2.15.4
 
 
