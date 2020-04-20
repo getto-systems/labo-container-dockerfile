@@ -28,6 +28,7 @@ RUN set -x && \
     neovim \
     python-pynvim \
     ripgrep \
+    libffi \
   && \
   : "install yash" && \
   cd /opt && \
