@@ -50,6 +50,7 @@ RUN set -x && \
   rm -rf /root/.npm && \
   : "setup user" && \
   useradd $BUILD_LABO_USER -s /bin/bash && \
+  groupadd docker && \
   :
 
 COPY entrypoint.sh /usr/local/bin
