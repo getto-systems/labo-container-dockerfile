@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.17.0
+
+- add: docker user : See merge request getto-systems-base/labo/container/dockerfile!98
+
+
 ## Version : 2.16.0
 
 - add: libffi : See merge request getto-systems-base/labo/container/dockerfile!96
