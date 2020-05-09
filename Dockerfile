@@ -30,6 +30,10 @@ RUN set -x && \
     ripgrep \
     libffi \
   && \
+  : "to fix vulnerabilities, update packages : 2020-05-09" && \
+  : pacman -Syq --noconfirm \
+    openssh \
+  && \
   : "install yash" && \
   cd /opt && \
   git clone https://github.com/magicant/yash && \
@@ -50,7 +54,6 @@ RUN set -x && \
   rm -rf /root/.npm && \
   : "setup user" && \
   useradd $BUILD_LABO_USER -s /bin/bash && \
-  groupadd docker && \
   :
 
 COPY entrypoint.sh /usr/local/bin
