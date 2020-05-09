@@ -123,7 +123,7 @@ release_push:
     - curl $TRELLIS_HANGAR/docker_login.sh | sh
   script:
     - docker build -t $image:$version .
-    - docker tag $image:$version $image:latest .
+    - docker tag $image:$version $image:latest
     - docker push $image:$version
     - docker push $image:latest
 
