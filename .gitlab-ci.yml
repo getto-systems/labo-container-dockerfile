@@ -3,8 +3,6 @@ image: getto/labo-container:latest
 stages:
   - image_build
   - image_test
-  - image_scheduled_test
-  - image_fix_vulnerabilities
   - bump_version
   - release
   - release_push
@@ -57,55 +55,16 @@ image_test:
     - image_build
 
   before_script:
-    - export HOME=$(pwd)
-    - curl $TRELLIS_HANGAR/install_trivy.sh | sh -s -- vendor
     - curl $TRELLIS_HANGAR/install_dockle.sh | sh -s -- vendor
   script:
     - ./vendor/dockle --exit-code 1 --input .build/image.tar
-    - ./vendor/trivy --exit-code 1 --light --no-progress --ignore-unfixed --input .build/image.tar
-
-image_scheduled_test:
-  stage: image_scheduled_test
-  only:
-    refs:
-      - schedules
-    variables:
-      - $CHECK
-
-  before_script:
-    - export HOME=$(pwd)
-    - curl $TRELLIS_HANGAR/install_trivy.sh | sh -s -- vendor
-    - curl $TRELLIS_HANGAR/install_dockle.sh | sh -s -- vendor
-  script:
-    - ./vendor/dockle --exit-code 1 $(cat .getto-hangar-image)
-    - ./vendor/trivy --exit-code 1 --light --no-progress --ignore-unfixed $(cat .getto-hangar-image)
-
-image_fix_vulnerabilities:
-  stage: image_fix_vulnerabilities
-  only:
-    refs:
-      - schedules
-    variables:
-      - $CHECK
-  when: on_failure
-
-  image: buildpack-deps:buster-scm
-
-  before_script:
-    - git config user.email admin@getto.systems
-    - git config user.name getto
-    - curl $TRELLIS_GIT_POST/setup.sh | sh -s -- ./vendor/getto-systems
-    - export PATH=$PATH:./vendor/getto-systems/git-post/bin
-  script:
-    - curl $TRELLIS_HANGAR/fix-vulnerabilities.sh | sh -s -- Dockerfile
-    - 'git add Dockerfile && git commit -m "fix: vulnerabilities"'
-    - curl $TRELLIS_CI_BUMP_VERSION/request.sh | bash -s -- ./.message/fix-vulnerabilities.sh
 
 bump_version:
   stage: bump_version
   only:
     refs:
       - triggers
+      - schedules
     variables:
       - $RELEASE
 
