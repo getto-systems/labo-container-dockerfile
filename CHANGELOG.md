@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.18.0
+
+- fix: gitlab-ci : See merge request getto-systems-base/labo/container/dockerfile!101
+
+
 ## Version : 2.17.1
 
 
