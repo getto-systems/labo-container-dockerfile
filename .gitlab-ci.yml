@@ -57,6 +57,7 @@ image_test:
     - image_build
 
   before_script:
+    - export HOME=$(pwd)
     - curl $TRELLIS_HANGAR/install_trivy.sh | sh -s -- vendor
     - curl $TRELLIS_HANGAR/install_dockle.sh | sh -s -- vendor
   script:
@@ -72,6 +73,7 @@ image_scheduled_test:
       - $CHECK
 
   before_script:
+    - export HOME=$(pwd)
     - curl $TRELLIS_HANGAR/install_trivy.sh | sh -s -- vendor
     - curl $TRELLIS_HANGAR/install_dockle.sh | sh -s -- vendor
   script:
