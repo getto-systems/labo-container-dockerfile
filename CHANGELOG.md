@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.20.0
+
+- fix: npm package : See merge request getto-systems-base/labo/container/dockerfile!112
+
+
 ## Version : 2.19.0
 
 - add: neovim package : See merge request getto-systems-base/labo/container/dockerfile!110
