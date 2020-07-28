@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version : 2.19.0
+
+- add: neovim package : See merge request getto-systems-base/labo/container/dockerfile!110
+
+
 ## Version : 2.18.5
 
 - fix: gitlab ci : See merge request getto-systems-base/labo/container/dockerfile!108
