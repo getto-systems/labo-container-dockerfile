@@ -47,6 +47,7 @@ RUN set -x && \
   : "install npm packages" && \
   npm install -g \
     npm \
+    neovim \
     textlint \
     textlint-rule-preset-ja-technical-writing \
     textlint-rule-write-good \
