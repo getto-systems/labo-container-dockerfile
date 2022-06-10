@@ -91,6 +91,8 @@ release:
       - triggers
       - schedules
 
+  before_script:
+    - git config --add safe.directory $(pwd)
   script:
     - curl $TRELLIS_CI_BUMP_VERSION/push_tags.sh | sh
 
