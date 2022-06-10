@@ -68,7 +68,7 @@ bump_version:
     variables:
       - $RELEASE
 
-  image: buildpack-deps:buster-scm
+  image: buildpack-deps:bullseye-scm
 
   before_script:
     - git config user.email admin@getto.systems
@@ -91,8 +91,8 @@ release:
       - triggers
       - schedules
 
-  before_script:
-    - git config safe.directory $(pwd)
+  image: buildpack-deps:bullseye-scm
+
   script:
     - curl $TRELLIS_CI_BUMP_VERSION/push_tags.sh | sh
 
@@ -142,7 +142,7 @@ release_success:
       - schedules
   when: on_success
 
-  image: buildpack-deps:buster-curl
+  image: buildpack-deps:bullseye-curl
 
   before_script:
     - export url=$GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true
@@ -164,7 +164,7 @@ release_failure:
       - schedules
   when: on_failure
 
-  image: buildpack-deps:buster-curl
+  image: buildpack-deps:bullseye-curl
 
   before_script:
     - export url=$GETTO_PSYCHER_URL?$GETTO_PSYCHER_TOKEN=true
