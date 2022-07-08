@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version : 2.20.20
+
+
+
 ## Version : 2.20.19
 
 - fix: gitlab ci : See merge request getto-systems-base/labo/container/dockerfile!134
